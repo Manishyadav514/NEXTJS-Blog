@@ -3,7 +3,7 @@ import Image from "next/image"
 const url = process.env.REACT_APP_API_KEY;
 console.log(url);
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const joke = await fetch("https://v2.jokeapi.dev/joke/Any");
   let allJoke = await joke.json();
   console.log(allJoke);
