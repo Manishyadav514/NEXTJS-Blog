@@ -1,45 +1,62 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-  const url = process.env.REACT_APP_API_KEY
-  console.log(url);
-// export async function getStaticProps() {
-//   const res = await fetch(`https://v2.jokeapi.dev/joke/Any`);
-//   const data = await res.json();
-//   console.log(data);
-//   console.log(data.joke);
-//   return { props: { data } };
-// }
+import React, { useEffect, useState } from "react";
+import Image from "next/image"
+const url = process.env.REACT_APP_API_KEY;
+console.log(url);
 
-
-export const randomJokes = ({ data }) => {
-  const [jokes, setValues] = useState({ joke: "", setup:"", delivery: "" });
-  
-  const getNewJoke = () => {
-    fetch("https://v2.jokeapi.dev/joke/Any")
-      .then((response) => response.text())
-      .then((data) => console.log(data), console.log(data?.setup))
-      .catch((error) => {
-        console.log(error);
-      });
-    // alert("PK");
-    // console.log(data);
-    setValues( { joke: data?.joke, setup:data?.setup, delivery: data?.delivery } );
-    // console.log(jokes);
-    return { props: { data } };
+export const getStaticProps = async () => {
+  const joke = await fetch("https://v2.jokeapi.dev/joke/Any");
+  let allJoke = await joke.json();
+  console.log(allJoke);
+  return {
+    props: {
+      allJoke,
+    },
   };
-  console.log(data?.setup);
-  console.log(jokes);
+};
 
-
+export const randomJokes = ({ data, allJoke, allAlbums }) => {
+  // const [jokes, setValues] = useState({ joke: "", setup: "", delivery: "" });
+  // const getNewJoke = () => {
+  //   fetch("https://v2.jokeapi.dev/joke/Any")
+  //     .then((response) => response.json())
+  //     .then(
+  //       (data) => console.log(data),
+  //       setValues({
+  //         joke: data?.joke,
+  //         setup: data?.setup,
+  //         delivery: data?.delivery,
+  //       })
+  //     )
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   return data;
+  // };
+  // useEffect(() => {
+  //   const joke = getNewJoke;
+  //   console.log(joke);
+  // }, [getNewJoke]);
+  // console.log("jokes", jokes);
+  // console.log("data?.setup",data?.setup);
   // console.log(data);
   // console.log(data.type);
+
   return (
     <div>
+      {/* {allJoke?.type == "single" ? (
+        <div>{allJoke?.joke}</div>
+      ) : (
+        <div>
+          {allJoke.setup}
+          {allJoke?.delivery}
+        </div>
+      )} */}
+
       <div className="grid pt-4 place-items-center">
         <button
           className="h-10 px-6 font-semibold rounded-md bg-black text-white"
           type="submit"
-          onClick={getNewJoke}
+          // onClick={ getStaticProp}
         >
           Click to get a new joke!
         </button>
@@ -105,54 +122,75 @@ export const randomJokes = ({ data }) => {
         </div>
       </div>
 
-      <section className="text-gray-600 body-font">
-        <div className="container px-5 py-24 mx-auto flex flex-wrap">
-          <div className="flex flex-wrap -m-4">
-            <div className="p-4 lg:w-1/2 md:w-full">
-              <div className="flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col">
-                <div className="w-16 h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-purple-100 text-purple-500 flex-shrink-0">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-8 h-8"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                  </svg>
-                </div>
-                <div className="flex-grow">
-                  <p className="leading-relaxed text-base">{data?.joke}</p>
-                  <p className="leading-relaxed text-base">{data?.setup}</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 lg:w-1/2 md:w-full">
-              <div className="flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col">
-                <div className="w-16 h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-purple-100 text-purple-500 flex-shrink-0">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-10 h-10"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                </div>
-                <div className="flex-grow">
-                  <p className="leading-relaxed text-base">{data?.delivery} </p>
+      {allJoke?.type == "single" ? (
+        <div>
+          <section class="text-gray-600 body-font">
+            <div class="container px-5 py-24 mx-auto flex flex-col">
+              <div class="lg:w-4/6 mx-auto">
+                <div class="flex flex-col sm:flex-row mt-10">
+                  <div class="sm:w-1/2 text-center sm:pr-8 sm:py-8">
+                    <div class="w-20 h-20 r=5 rounded-full inline-flex items-center justify-center bg-black text-gray-400">
+                      <img
+                        alt="content"
+                        class="object-fill object-center rounded-lg h-full w-full"
+                        src="\cat (1).png"
+                      ></img>
+                    </div>
+                  </div>
+                  <div class="sm:w-2/2 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
+                    <p class="leading-relaxed text-lg mb-4">
+                    {allJoke?.joke}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
-      </section>
+      ) : (
+        <div>
+          <section className="text-gray-600 body-font">
+            <div className="container px-5 py-24 mx-auto flex flex-wrap">
+              <div className="flex flex-wrap -m-4">
+                <div className="p-4 lg:w-1/2 md:w-full">
+                  <div className="flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col">
+                    <div className="w-20 h-20 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-gray-300 text-purple-500 flex-shrink-0">
+                    <img
+                        alt="content"
+                        class="object-fill object-center rounded-lg h-full w-full"
+                        src="\pumpkin.png"
+                      ></img>
+                    </div>
+                    <div className="flex-grow">
+                      <p className="leading-relaxed text-base">
+                        {" "}
+                        {allJoke.setup}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 lg:w-1/2 md:w-full">
+                  <div className="flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col">
+                    <div className="w-20 h-20 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-black text-purple-500 flex-shrink-0">
+                    <img
+                        alt="content"
+                        class="object-fill object-center rounded-lg h-full w-full"
+                        src="\cat (3).png"
+                      ></img>
+                    </div>
+                    <div className="flex-grow">
+                      <p className="leading-relaxed text-base">
+                        {allJoke?.delivery}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 };
