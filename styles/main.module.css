@@ -1,0 +1,25 @@
+/* Challange 5 */
+.challange-5{
+  width: 5rem;
+  height: 5rem;
+  display: inline-block;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin-5 1s infinite;
+  background-color: black;
+}
+@keyframes spin-5{
+  0%{
+    transform: rotate(0deg);
+  }
+  50%{
+    transform: rotate(180deg);
+    border-top-color: #fc4182;
+    border-bottom-color: #80ffdb;
+    border-right-color: transparent;
+    border-left-color: transparent;
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
