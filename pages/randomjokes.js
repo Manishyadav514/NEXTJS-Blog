@@ -25,9 +25,17 @@ export const randomJokes = ({ Joke }) => {
   // };
   // // console.log(currentJoke);
 
+  const [query, setQuery] = useState("");
+  const handleQuery = (e) => {
+    e?.preventDefault;
+    setQuery(e?.target.value);
+  };
   const getNewJoke = async () => {
     const response = await fetch("/api/randomJoke", {
       method: "GET",
+      headers: {
+        query: query,
+      },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -39,6 +47,7 @@ export const randomJokes = ({ Joke }) => {
   };
   useEffect(() => {
     getNewJoke();
+    handleQuery();
   }, []);
 
   return (
@@ -60,18 +69,20 @@ export const randomJokes = ({ Joke }) => {
         >
           Click to get a new joke!
         </button>
-        <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-slate-200">
+        <div className="flex items-baseline mt-4 mb-6 pb-2 border-b border-slate-200">
           <div className="space-x-2 flex text-sm">
             <label>
               <input
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="xs"
+                value="?type=single"
                 // checked
+                // checked={this.value}
+                onChange={handleQuery}
               />
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                XS
+              <div className="w-24 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
+                Single
               </div>
             </label>
             <label>
@@ -79,10 +90,11 @@ export const randomJokes = ({ Joke }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="s"
+                value="?type=twopart"
+                onChange={handleQuery}
               />
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                S
+              <div className="w-24 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
+                Double
               </div>
             </label>
             <label>
@@ -90,42 +102,66 @@ export const randomJokes = ({ Joke }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="m"
+                value=""
+                onChange={handleQuery}
               />
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                M
-              </div>
-            </label>
-            <label>
-              <input
-                className="sr-only peer"
-                name="size"
-                type="radio"
-                value="l"
-              />
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                L
-              </div>
-            </label>
-            <label>
-              <input
-                className="sr-only peer"
-                name="size"
-                type="radio"
-                value="xl"
-              />
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                XL
+              <div className="w-24 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
+                Reset
               </div>
             </label>
           </div>
         </div>
       </div>
 
+      <div class="flex justify-center">
+        <div class="flex items-center">
+          <input
+            id="link-checkbox"
+            type="checkbox"
+            value=""
+            class=" form-check-input focus:outline-none  mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2  w-4 h-4  text-blue-100 bg-white rounded-sm border border-gray-300  cursor-pointer transition duration-200"
+          />
+          <label
+            for="link-checkbox"
+            class=" mr-2 text-sm font-medium text-gray-200 dark:text-gray-500"
+          >
+            Programming
+          </label>
+        </div>
+        <div class="flex items-center">
+          <input
+            id="link-checkbox"
+            type="checkbox"
+            value=""
+            class=" form-check-input focus:outline-none  mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2  w-4 h-4  text-blue-100 bg-white rounded-sm border border-gray-300  cursor-pointer transition duration-200"
+          />
+          <label
+            for="link-checkbox"
+            class="mr-2 text-sm font-medium text-gray-200 dark:text-gray-500"
+          >
+            Religious
+          </label>
+        </div>
+        <div class="flex items-center">
+          <input
+            id="link-checkbox"
+            type="checkbox"
+            value=""
+            class=" form-check-input focus:outline-none  mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2  w-4 h-4  text-blue-100 bg-white rounded-sm border border-gray-300  cursor-pointer transition duration-200"
+          />
+          <label
+            for="link-checkbox"
+            class="mr-2 text-sm font-medium text-gray-200 dark:text-gray-500"
+          >
+            Dark
+          </label>
+        </div>
+      </div>
+
       {currentJoke?.type == "single" ? (
         <div>
           <section className="text-gray-600 body-font">
-            <div className="container px-5 py-24 mx-auto flex flex-col">
+            <div className="container px-5  mx-auto flex flex-col">
               <div className="lg:w-4/6 mx-auto">
                 <div className="flex flex-col sm:flex-row mt-10">
                   <div className="sm:w-1/2 text-center sm:pr-8 sm:py-8">
@@ -151,7 +187,7 @@ export const randomJokes = ({ Joke }) => {
       ) : (
         <div>
           <section className="text-gray-600 body-font">
-            <div className="container px-5 py-24 mx-auto flex flex-wrap">
+            <div className="container px-5 py-5 mx-auto flex flex-wrap">
               <div className="flex flex-wrap -m-4">
                 <div className="p-4 lg:w-1/2 md:w-full">
                   <div className="flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col">
