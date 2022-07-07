@@ -1,54 +1,54 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image"
+import Image from "next/image";
 const url = process.env.REACT_APP_API_KEY;
 console.log(url);
 
-export const getServerSideProps = async () => {
-  const joke = await fetch("https://v2.jokeapi.dev/joke/Any");
-  let allJoke = await joke.json();
-  console.log(allJoke);
-  return {
-    props: {
-      allJoke,
-    },
-  };
-};
+// export const getServerSideProps = async () => {
+//   const joke = await fetch("https://v2.jokeapi.dev/joke/Any");
+//   let Joke = await joke.json();
+//   // console.log(Joke);
+//   return {
+//     props: {
+//       Joke,
+//     },
+//   };
+// };
 
-export const randomJokes = ({ data, allJoke, allAlbums }) => {
-  // const [jokes, setValues] = useState({ joke: "", setup: "", delivery: "" });
-  // const getNewJoke = () => {
-  //   fetch("https://v2.jokeapi.dev/joke/Any")
-  //     .then((response) => response.json())
-  //     .then(
-  //       (data) => console.log(data),
-  //       setValues({
-  //         joke: data?.joke,
-  //         setup: data?.setup,
-  //         delivery: data?.delivery,
-  //       })
-  //     )
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   return data;
+export const randomJokes = ({ Joke }) => {
+  const [currentJoke, setCurrentJoke] = useState("");
+  // const getNewJoke = async () => {
+  //   const response = await fetch("/api/randomJoke", {
+  //     method: "GET",
+  //   });
+  //   let allJoke = await response.json();
+  //   setCurrentJoke(allJoke);
   // };
-  // useEffect(() => {
-  //   const joke = getNewJoke;
-  //   console.log(joke);
-  // }, [getNewJoke]);
-  // console.log("jokes", jokes);
-  // console.log("data?.setup",data?.setup);
-  // console.log(data);
-  // console.log(data.type);
+  // // console.log(currentJoke);
+
+  const getNewJoke = async () => {
+    const response = await fetch("/api/randomJoke", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data), setCurrentJoke(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+  useEffect(() => {
+    getNewJoke();
+  }, []);
 
   return (
     <div>
-      {/* {allJoke?.type == "single" ? (
-        <div>{allJoke?.joke}</div>
+      {/* {currentJoke?.type == "single" ? (
+        <div>{currentJoke?.joke}</div>
       ) : (
         <div>
-          {allJoke.setup}
-          {allJoke?.delivery}
+          {currentJoke?.setup}
+          {currentJoke?.delivery}
         </div>
       )} */}
 
@@ -56,7 +56,7 @@ export const randomJokes = ({ data, allJoke, allAlbums }) => {
         <button
           className="h-10 px-6 font-semibold rounded-md bg-black text-white"
           type="submit"
-          // onClick={ getStaticProp}
+          onClick={getNewJoke}
         >
           Click to get a new joke!
         </button>
@@ -122,24 +122,25 @@ export const randomJokes = ({ data, allJoke, allAlbums }) => {
         </div>
       </div>
 
-      {allJoke?.type == "single" ? (
+      {currentJoke?.type == "single" ? (
         <div>
-          <section class="text-gray-600 body-font">
-            <div class="container px-5 py-24 mx-auto flex flex-col">
-              <div class="lg:w-4/6 mx-auto">
-                <div class="flex flex-col sm:flex-row mt-10">
-                  <div class="sm:w-1/2 text-center sm:pr-8 sm:py-8">
-                    <div class="w-20 h-20 r=5 rounded-full inline-flex items-center justify-center bg-black text-gray-400">
+          <section className="text-gray-600 body-font">
+            <div className="container px-5 py-24 mx-auto flex flex-col">
+              <div className="lg:w-4/6 mx-auto">
+                <div className="flex flex-col sm:flex-row mt-10">
+                  <div className="sm:w-1/2 text-center sm:pr-8 sm:py-8">
+                    <div className="w-20 h-20 r=5 rounded-full inline-flex items-center justify-center bg-black text-gray-400">
                       <img
                         alt="content"
-                        class="object-fill object-center rounded-lg h-full w-full"
+                        className="object-fill object-center rounded-lg h-full w-full"
                         src="\cat (1).png"
                       ></img>
                     </div>
                   </div>
-                  <div class="sm:w-2/2 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
-                    <p class="leading-relaxed text-lg mb-4">
-                    {allJoke?.joke}
+                  <div className="sm:w-2/2 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
+                    <p className="leading-relaxed text-lg mb-4">
+                      {/* {allJoke?.joke} */}
+                      {currentJoke?.joke}
                     </p>
                   </div>
                 </div>
@@ -155,16 +156,16 @@ export const randomJokes = ({ data, allJoke, allAlbums }) => {
                 <div className="p-4 lg:w-1/2 md:w-full">
                   <div className="flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col">
                     <div className="w-20 h-20 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-gray-300 text-purple-500 flex-shrink-0">
-                    <img
+                      <img
                         alt="content"
-                        class="object-fill object-center rounded-lg h-full w-full"
-                        src="\pumpkin.png"
+                        className="object-fill object-center rounded-lg h-full w-full"
+                        src="\cat (2).png"
                       ></img>
                     </div>
                     <div className="flex-grow">
                       <p className="leading-relaxed text-base">
-                        {" "}
-                        {allJoke.setup}
+                        {/* {allJoke?.setup} */}
+                        {currentJoke?.setup}
                       </p>
                     </div>
                   </div>
@@ -172,16 +173,17 @@ export const randomJokes = ({ data, allJoke, allAlbums }) => {
 
                 <div className="p-4 lg:w-1/2 md:w-full">
                   <div className="flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col">
-                    <div className="w-20 h-20 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-black text-purple-500 flex-shrink-0">
-                    <img
+                    <div className="w-20 h-20 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-gray-300 text-purple-500 flex-shrink-0">
+                      <img
                         alt="content"
-                        class="object-fill object-center rounded-lg h-full w-full"
+                        className="object-fill object-center rounded-lg h-full w-full"
                         src="\cat (3).png"
                       ></img>
                     </div>
                     <div className="flex-grow">
                       <p className="leading-relaxed text-base">
-                        {allJoke?.delivery}
+                        {/* {allJoke?.delivery} */}
+                        {currentJoke?.delivery}
                       </p>
                     </div>
                   </div>

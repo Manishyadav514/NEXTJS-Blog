@@ -33,6 +33,7 @@ const Contact = () => {
       });
 
   }
+  
   const handleChange = (e) => {
     if (e.target.name == 'phone') {
       setphone(e.target.value)
